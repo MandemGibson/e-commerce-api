@@ -1,7 +1,23 @@
 import express from "express";
+import { config } from "dotenv";
+import cookieParser from "cookie-parser";
+import morgan from "morgan";
+import { confirmRedisConnection } from "./utils/redis";
+
+//Env configuration
+config();
 
 const app = express();
 
-app.listen(3000, () => {
+//Middlewares
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(morgan("dev"));
+app.use(cookieParser());
+
+// app.use("api/v1");
+
+app.listen(3000, async () => {
   console.log("Server is running on port 3000");
+  await confirmRedisConnection();
 });
