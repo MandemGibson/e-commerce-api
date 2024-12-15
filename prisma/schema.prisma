@@ -12,3 +12,38 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id       String @id @default(cuid())
+  email    String @unique
+  password String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Product {
+  id              String  @id @default(cuid())
+  productName     String
+  brand           String
+  model           String?
+  storage         String?
+  color           String?
+  os              String? // Operating system for phones
+  batteryCapacity Int?
+  type            String? // e.g., charger, case
+  compatibility   String? // Accessories compatibility
+
+  price        Float
+  description  String
+  quantity     Int
+  category     String // e.g., "Phones" or "Accessories"
+  imageUrl     String
+  warranty     String? // e.g., "1 year", "6 months"
+  dimensions   String? // e.g., "15x8x1 cm"
+  condition    String? // e.g., "new", "refurbished", "used"
+  availability Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
