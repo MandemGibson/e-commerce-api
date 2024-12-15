@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { login, signUp } from "../services/auth.service";
-import bcrypt from "bcrypt";
 import { hashPassword, validatePassword } from "../utils/password";
+import { getUserByEmail } from "../services/user.service";
 
 export const loginHandler = async (
   req: Request,
@@ -40,6 +40,10 @@ export const signUpHandler = async (
       return res
         .status(400)
         .json({ message: "Email and password are required" });
+
+    const existingUser = await getUserByEmail(email);
+    if (existingUser)
+      return res.status(400).json({ message: "Email already exists" });
 
     const hashedPassword = await hashPassword(password);
     const user = await signUp({ email, password: hashedPassword as string });

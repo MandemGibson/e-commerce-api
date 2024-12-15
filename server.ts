@@ -3,6 +3,7 @@ import { config } from "dotenv";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import { confirmRedisConnection } from "./utils/redis";
+import { apiRouter } from "./routers/api.route";
 
 //Env configuration
 config();
@@ -15,7 +16,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 app.use(cookieParser());
 
-// app.use("api/v1");
+app.use("/api/v1", apiRouter);
+
+app.get("/", (_req, res) => {
+  res.send("Welcome to the API");
+});
 
 app.listen(3000, async () => {
   console.log("Server is running on port 3000");
