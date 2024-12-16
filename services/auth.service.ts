@@ -1,9 +1,11 @@
 import { User } from "../entity";
+import { getAdmin } from "./admin.service";
 import { addUser, getUserByEmail } from "./user.service";
 
 export const login = async (email: string) => {
   try {
-    return await getUserByEmail(email);
+    const user = (await getUserByEmail(email)) ?? (await getAdmin(email));
+    return user;
   } catch (error: any) {
     console.error("Error in auth.service, loginUser: ", error.message);
   }
