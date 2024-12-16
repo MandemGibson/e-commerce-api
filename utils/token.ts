@@ -1,7 +1,11 @@
 import { Response } from "express";
 import jwt from "jsonwebtoken";
 
-export const generateToken = async (userId: string, res: Response) => {
+export const generateToken = async (
+  userId: string,
+  res: Response,
+  rememberMe: boolean
+) => {
   try {
     const token = await jwt.sign(userId, process.env.JWT_SECRET_KEY as string, {
       expiresIn: "7d",
@@ -9,11 +13,19 @@ export const generateToken = async (userId: string, res: Response) => {
 
     res.cookie("jwt", token, {
       httpOnly: true,
-      maxAge: 7 * 24 * 60 * 60 * 1000,
+      maxAge: rememberMe ? 14 * 24 * 60 * 60 * 1000 : 7 * 24 * 60 * 60 * 1000,
       sameSite: "strict",
       secure: process.env.NODE_ENV === "production",
     });
   } catch (error: any) {
     console.error("Error generating token: ", error.message);
+  }
+};
+
+export const verifyToken = async (token: string) => {
+  try {
+    return jwt.verify(token, process.env.JWT_SECRET_KET as string);
+  } catch (error: any) {
+    console.error("Error verifying token: ", error.message);
   }
 };
