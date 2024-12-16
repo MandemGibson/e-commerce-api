@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import { confirmRedisConnection } from "./utils/redis";
 import { apiRouter } from "./routers/api.route";
+import { createAdmin } from "./services/admin.service";
 
 //Env configuration
 config();
@@ -24,5 +25,6 @@ app.get("/", (_req, res) => {
 
 app.listen(3000, async () => {
   console.log("Server is running on port 3000");
-  await confirmRedisConnection();
+  // await confirmRedisConnection();
+  await createAdmin();
 });
