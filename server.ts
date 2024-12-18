@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request } from "express";
 import { config } from "dotenv";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";

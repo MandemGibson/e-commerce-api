@@ -2,6 +2,14 @@ import { Admin } from "../entity";
 import { hashPassword } from "../utils/password";
 import { prisma } from "./prisma.service";
 
+export const getAdmins = async () => {
+  try {
+    return await prisma.admin.findMany();
+  } catch (error: any) {
+    console.error("Error getting admins: ", error.message);
+  }
+};
+
 export const getAdmin = async (email: string) => {
   try {
     return prisma.admin.findUnique({ where: { email } });
