@@ -85,3 +85,5 @@ export const logoutHandler = async (
     return res.status(500).json({ message: error.message });
   }
 };
+
+export const forgotPasswordHandler = async () => {};

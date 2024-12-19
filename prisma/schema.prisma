@@ -40,15 +40,22 @@ model Product {
   price        Float
   description  String
   quantity     Int
-  category     String // e.g., "Phones" or "Accessories"
+  categoryId   String? // e.g., "Phones" or "Accessories"
+  category     Category? @relation(fields: [categoryId], references: [id])
   imageUrl     String
   warranty     String? // e.g., "1 year", "6 months"
   dimensions   String? // e.g., "15x8x1 cm"
   condition    String? // e.g., "new", "refurbished", "used"
-  availability Boolean @default(true)
+  availability Boolean   @default(true)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id       String    @id @default(cuid())
+  name     String
+  products Product[]
 }
 
 model Admin {
@@ -56,4 +63,22 @@ model Admin {
   email    String @unique
   password String
   role     Int    @default(6637)
+}
+
+model Otp {
+  id        String   @id @default(cuid())
+  otp       String
+  expiresIn DateTime
+  valid     Boolean  @default(true)
+  createdAt DateTime @default(now())
+  userId    String
+}
+
+model ResetToken {
+  id        String   @id @unique @default(uuid())
+  token     String
+  userId    String
+  valid     Boolean  @default(true)
+  expiresIn DateTime
+  createdAt DateTime @default(now())
 }
