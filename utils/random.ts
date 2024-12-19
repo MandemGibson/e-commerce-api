@@ -4,6 +4,6 @@ export const generateRandomOTP = (): number => {
   return crypto.randomInt(10000, 99999);
 };
 
-export const generateRandomRefreshToken = (): string => {
+export const generateRandomResetToken = (): string => {
   return crypto.randomBytes(16).toString("hex");
 };
