@@ -31,14 +31,14 @@ export const createManyCategoriesHandler = async (
   res: Response
 ): Promise<any> => {
   try {
-    const payload = req.body;
-    if (!payload.length)
+    const {categories} = req.body;
+    if (!categories.length)
       return res.status(400).json({ message: "Add at least one category" });
 
-    const categories = await createManyCategories(payload);
+    const newCategories = await createManyCategories(categories);
     res
       .status(201)
-      .json({ message: "Categories added successfully", data: categories });
+      .json({ message: "Categories added successfully", data: newCategories });
   } catch (error: any) {
     return res.status(500).json({ message: error.message });
   }
