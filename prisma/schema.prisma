@@ -20,6 +20,7 @@ model User {
   name        String?
   phoneNumber String?
   address     String?
+  role        Int     @default(6631)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -62,7 +63,7 @@ model Admin {
   id       String @id @default(cuid())
   email    String @unique
   password String
-  role     Int    @default(6637)
+  role     Int    @default(9291)
 }
 
 model Otp {

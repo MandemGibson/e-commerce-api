@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "Admin" ALTER COLUMN "role" SET DEFAULT 9291;
+
+-- AlterTable
+ALTER TABLE "User" ADD COLUMN     "role" INTEGER NOT NULL DEFAULT 6631;

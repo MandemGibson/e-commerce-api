@@ -5,6 +5,7 @@ export type User = {
   name?: string | null;
   phoneNumber?: string | null;
   address?: string | null;
+  role?: number;
   createdAt?: Date;
   updatedAt?: Date;
 };

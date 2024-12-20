@@ -1,3 +1,4 @@
 make category mandatory for adding product
 store admin password in .env
 make sure no one signs up with admin's email
+make user endpoints accessible by admin only
