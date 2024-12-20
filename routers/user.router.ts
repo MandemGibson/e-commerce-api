@@ -10,7 +10,6 @@ import { requireUser } from "../middlewares/protectedRoute";
 export const userRouter = Router();
 
 userRouter.get("/", requireUser, getAllUsersHandler);
-
 userRouter
   .route("/:id")
   .get(requireUser, getUserByIdHandler)

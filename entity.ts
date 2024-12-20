@@ -16,3 +16,8 @@ export type Admin = {
   password: string;
   role: number;
 };
+
+export type Category = {
+  id?: string
+  name: string,
+}
