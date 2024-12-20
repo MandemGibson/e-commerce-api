@@ -50,6 +50,17 @@ export const updateUser = async (id: string, payload: User) => {
   }
 };
 
+export const updatePassword = async (id: string, password: string) => {
+  try {
+    return await prisma.user.update({
+      where: { id },
+      data: { password },
+    });
+  } catch (error: any) {
+    console.error("Error updating user's password: ", error);
+  }
+};
+
 export const deleteUser = async (id: string) => {
   try {
     return prisma.user.delete({

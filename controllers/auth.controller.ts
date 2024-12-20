@@ -1,7 +1,7 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { login, signUp } from "../services/auth.service";
 import { hashPassword, validatePassword } from "../utils/password";
-import { getUserByEmail, updateUser } from "../services/user.service";
+import { getUserByEmail, updatePassword } from "../services/user.service";
 import { generateToken } from "../utils/token";
 import { createOtp, findOtp, invalidateOtp } from "../services/otp.service";
 import {
@@ -121,7 +121,7 @@ export const verifyOtpHandler = async (
     const foundOtp = await findOtp(otp);
     if (!foundOtp) return res.status(404).json({ message: "Invalid OTP" });
 
-    let resetToken = await findResetToken(foundOtp.userId);
+    let resetToken = await findResetToken({ userId: foundOtp.userId });
     if (!resetToken) resetToken = await createResetToken(foundOtp.userId);
 
     await invalidateOtp(foundOtp.id);
@@ -143,7 +143,7 @@ export const resetPasswordHandler = async (
     if (!token || !newPassword || !confirmPassword)
       return res.status(400).json({ message: "All fields are required" });
 
-    const resetToken = await findResetToken(token);
+    const resetToken = await findResetToken({ token });
     if (!resetToken)
       return res.status(404).json({ message: "Invalid reset token" });
 
@@ -152,10 +152,14 @@ export const resetPasswordHandler = async (
 
     const hashedPassword = await hashPassword(newPassword);
 
-    await updateUser(resetToken.id, {
-      password: hashedPassword as string,
-    });
+    const user = await updatePassword(
+      resetToken.userId,
+      hashedPassword as string
+    );
     await invalidateResetToken(resetToken.id);
+
+    if (!user)
+      return res.status(404).json({ message: "Record to update not found" });
 
     res.status(200).json({ message: "Password reset successful" });
   } catch (error: any) {
