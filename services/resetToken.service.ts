@@ -17,10 +17,10 @@ export const createResetToken = async (userId: string) => {
   }
 };
 
-export const findResetToken = async (token: string) => {
+export const findResetToken = async (filter: any) => {
   try {
     return await prisma.resetToken.findFirst({
-      where: { token, valid: true, expiresIn: { gt: new Date() } },
+      where: { ...filter, valid: true, expiresIn: { gt: new Date() } },
     });
   } catch (error: any) {
     console.error("Error finding reset token: ", error.message);
