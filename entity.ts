@@ -17,7 +17,29 @@ export type Admin = {
   role: number;
 };
 
+export type Product = {
+  id?: string;
+  productName: string;
+  brand: string;
+  model?: string;
+  storage?: string;
+  color?: string;
+  os?: string;
+  batteryCapacity?: number;
+  type?: string;
+  compatibility?: string;
+  price: number;
+  description: string;
+  quantity: number;
+  categoryId: string | null;
+  imageUrl: string;
+  warranty: string;
+  dimensions: string;
+  condition: "NEW" | "REFURBISHED" | "USED" ;
+  availability: boolean;
+};
+
 export type Category = {
-  id?: string
-  name: string,
-}
+  id?: string;
+  name: string;
+};

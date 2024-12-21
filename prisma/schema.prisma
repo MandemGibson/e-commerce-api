@@ -13,6 +13,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  CUSTOMER
+  ADMIN
+}
+
+enum Condition {
+  NEW
+  REFURBISHED
+  USED
+}
+
 model User {
   id          String  @id @default(cuid())
   email       String  @unique
@@ -20,7 +31,8 @@ model User {
   name        String?
   phoneNumber String?
   address     String?
-  role        Int     @default(6631)
+  role        Role    @default(CUSTOMER)
+  cart        Cart?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -46,8 +58,23 @@ model Product {
   imageUrl     String
   warranty     String? // e.g., "1 year", "6 months"
   dimensions   String? // e.g., "15x8x1 cm"
-  condition    String? // e.g., "new", "refurbished", "used"
+  condition    Condition
   availability Boolean   @default(true)
+  Cart         Cart?     @relation(fields: [cartId], references: [id])
+  cartId       String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Cart {
+  id        String    @id @default(cuid())
+  quantity  Int
+  price     Float
+  userId    String    @unique
+  user      User      @relation(fields: [userId], references: [id])
+  productId String
+  products  Product[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -55,7 +82,7 @@ model Product {
 
 model Category {
   id       String    @id @default(cuid())
-  name     String
+  name     String    @unique
   products Product[]
 }
 
@@ -63,7 +90,7 @@ model Admin {
   id       String @id @default(cuid())
   email    String @unique
   password String
-  role     Int    @default(9291)
+  role     Role   @default(ADMIN)
 }
 
 model Otp {

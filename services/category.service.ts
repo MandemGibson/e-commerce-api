@@ -13,15 +13,6 @@ export const createCategory = async (payload: Category) => {
 
 export const createManyCategories = async (categories: Category[]) => {
   try {
-    // const createdCategories = [];
-    // for (const cat of categories) {
-    //   await prisma.category.create({
-    //     data: cat,
-    //   });
-    //   createdCategories.push(cat);
-    // }
-
-    // return createdCategories;
     return await prisma.category.createMany({
       data: categories,
       skipDuplicates: true,
