@@ -33,6 +33,7 @@ model User {
   address     String?
   role        Role    @default(CUSTOMER)
   cart        Cart?
+  orders      Order[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -50,31 +51,41 @@ model Product {
   type            String? // e.g., charger, case
   compatibility   String? // Accessories compatibility
 
-  price        Float
-  description  String
-  quantity     Int
-  categoryId   String? // e.g., "Phones" or "Accessories"
-  category     Category? @relation(fields: [categoryId], references: [id])
-  imageUrl     String
-  warranty     String? // e.g., "1 year", "6 months"
-  dimensions   String? // e.g., "15x8x1 cm"
-  condition    Condition
-  availability Boolean   @default(true)
-  cart         Cart?     @relation(fields: [cartId], references: [id])
-  cartId       String?
+  price         Float
+  description   String
+  quantity      Int
+  categoryId    String? // e.g., "Phones" or "Accessories"
+  category      Category?      @relation(fields: [categoryId], references: [id])
+  imageUrl      String
+  warranty      String? // e.g., "1 year", "6 months"
+  dimensions    String? // e.g., "15x8x1 cm"
+  condition     Condition
+  availability  Boolean        @default(true)
+  cartProducts  CartProduct[]
+  orderProducts OrderProduct[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Cart {
-  id        String    @id @default(cuid())
+  id           String        @id @default(cuid())
+  userId       String        @unique
+  user         User          @relation(fields: [userId], references: [id])
+  cartProducts CartProduct[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CartProduct {
+  id        String  @id @default(cuid())
+  cartId    String
+  cart      Cart    @relation(fields: [cartId], references: [id])
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
   quantity  Int
   price     Float
-  userId    String    @unique
-  user      User      @relation(fields: [userId], references: [id])
-  productId String
-  products  Product[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -84,6 +95,32 @@ model Category {
   id       String    @id @default(cuid())
   name     String    @unique
   products Product[]
+}
+
+model Order {
+  id            String         @id @default(cuid())
+  userId        String
+  user          User           @relation(fields: [userId], references: [id])
+  orderProducts OrderProduct[]
+  status        String
+  quantity      Int
+  price         Float
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model OrderProduct {
+  id        String  @id @default(cuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id])
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+  price     Float
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Admin {
