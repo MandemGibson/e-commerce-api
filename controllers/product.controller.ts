@@ -22,6 +22,7 @@ export const addProductHandler = async (
       description,
       imageUrl,
       condition,
+      categoryId,
     } = payload;
 
     if (
@@ -31,10 +32,14 @@ export const addProductHandler = async (
       !quantity ||
       !description ||
       !imageUrl ||
-      !condition
+      !condition ||
+      !categoryId
     ) {
       return res.status(400).json({ message: "Please fill in all fields" });
     }
+
+    if (!categoryId)
+      return res.status(400).json({ message: "Please select a category" });
 
     const newProduct = await addProduct(payload);
     if (!newProduct)

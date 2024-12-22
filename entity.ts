@@ -5,7 +5,7 @@ export type User = {
   name?: string | null;
   phoneNumber?: string | null;
   address?: string | null;
-  role?: number;
+  role?: "CUSTOMER";
   createdAt?: Date;
   updatedAt?: Date;
 };
@@ -14,7 +14,7 @@ export type Admin = {
   id: string;
   email: string;
   password: string;
-  role: number;
+  role: "ADMIN";
 };
 
 export type Product = {

@@ -60,7 +60,7 @@ model Product {
   dimensions   String? // e.g., "15x8x1 cm"
   condition    Condition
   availability Boolean   @default(true)
-  Cart         Cart?     @relation(fields: [cartId], references: [id])
+  cart         Cart?     @relation(fields: [cartId], references: [id])
   cartId       String?
 
   createdAt DateTime @default(now())
