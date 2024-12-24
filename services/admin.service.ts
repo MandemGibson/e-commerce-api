@@ -20,15 +20,16 @@ export const getAdmin = async (email: string) => {
 
 export const createAdmin = async () => {
   try {
-    const existingAdmin = await getAdmin("admin@shop.com");
+    const existingAdmin = await getAdmin(process.env.ADMIN_EMAIL as string);
     if (existingAdmin) return console.log("Admin already exists");
 
-    const password = "admin";
-    const hashedPassword = await hashPassword(password);
+    const hashedPassword = await hashPassword(
+      process.env.ADMIN_PASSWORD as string
+    );
 
     const admin = await prisma.admin.create({
       data: {
-        email: "admin@shop.com",
+        email: process.env.ADMIN_EMAIL as string,
         password: hashedPassword as string,
       },
     });
