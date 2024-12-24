@@ -9,6 +9,7 @@ import {
   findResetToken,
   invalidateResetToken,
 } from "../services/resetToken.service";
+import { getAdmin } from "../services/admin.service";
 
 export const loginHandler = async (
   req: Request,
@@ -48,7 +49,9 @@ export const signUpHandler = async (
         .status(400)
         .json({ message: "Email and password are required" });
 
-    const existingUser = await getUserByEmail(email);
+    const existingUser =
+      (await getUserByEmail(email)) ?? (await getAdmin(email));
+      
     if (existingUser)
       return res.status(400).json({ message: "Email already exists" });
 
