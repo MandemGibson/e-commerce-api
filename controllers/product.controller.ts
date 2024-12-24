@@ -7,13 +7,14 @@ import {
   getProductById,
   updateProduct,
 } from "../services/product.service";
+import { Product } from "../entity";
 
 export const addProductHandler = async (
   req: Request,
   res: Response
 ): Promise<any> => {
   try {
-    const payload = req.body;
+    const payload: Product = req.body;
     const {
       productName,
       price,
@@ -32,8 +33,7 @@ export const addProductHandler = async (
       !quantity ||
       !description ||
       !imageUrl ||
-      !condition ||
-      !categoryId
+      !condition 
     ) {
       return res.status(400).json({ message: "Please fill in all fields" });
     }
