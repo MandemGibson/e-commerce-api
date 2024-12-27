@@ -31,7 +31,16 @@ export const addToCart = async (
   }
 };
 
-export const getCart = async () => {};
+export const getCartByUserId = async (userId: string) => {
+  try {
+    return await prisma.cart.findUnique({
+      where: { userId },
+      include: { cartProducts: { include: { product: true } } },
+    });
+  } catch (error: any) {
+    console.log("Error getting cart: ", error.message);
+  }
+};
 
 export const removeFromCart = async () => {};
 
