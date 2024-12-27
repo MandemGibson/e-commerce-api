@@ -42,6 +42,14 @@ export const getCartByUserId = async (userId: string) => {
   }
 };
 
-export const removeFromCart = async () => {};
+export const removeFromCart = async (cartProductId: string) => {
+  try {
+    return await prisma.cartProduct.delete({
+      where: { id: cartProductId },
+    });
+  } catch (error: any) {
+    console.log("Error removing from cart: ", error.message);
+  }
+};
 
 export const clearCart = async () => {};
