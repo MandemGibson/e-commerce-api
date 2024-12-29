@@ -1,6 +1,16 @@
 import { Router } from "express";
 import { requireUser } from "../middlewares/protectedRoute";
-import { addToCartHandler } from "../controllers/cart.controller";
+import {
+  addToCartHandler,
+  clearCartHandler,
+  getCartHandler,
+  removeFromCartHandler,
+} from "../controllers/cart.controller";
 export const cartRouter = Router();
 
-cartRouter.route("/").post(requireUser, addToCartHandler);
+cartRouter.post("/", requireUser, addToCartHandler);
+cartRouter
+  .route("/:userId")
+  .get(requireUser, getCartHandler)
+  .delete(requireUser, clearCartHandler);
+cartRouter.put("/:cartProductId", requireUser, removeFromCartHandler);
