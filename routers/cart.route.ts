@@ -9,11 +9,11 @@ import {
 
 export const cartRouter = Router();
 
-cartRouter.post("/", requireUser, addToCartHandler);
-
 cartRouter
-  .route("/:userId")
-  .get(requireUser, getCartHandler)
-  .delete(requireUser, clearCartHandler);
+  .route("/")
+  .post(requireUser, addToCartHandler)
+  .get(requireUser, getCartHandler);
+
+cartRouter.delete("/:userId", requireUser, clearCartHandler);
 
 cartRouter.put("/:cartProductId", requireUser, removeFromCartHandler);

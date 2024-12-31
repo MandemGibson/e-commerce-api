@@ -11,14 +11,18 @@ export const addToCartHandler = async (
   res: Response
 ): Promise<any> => {
   try {
-    const { userId, productId, quantity } = req.body;
-    if (!userId || !productId || !quantity) {
+    const user = req.user;
+    if (!user.id) {
+      return res.status(400).json({ message: "User ID is required" });
+    }
+    const { productId, quantity } = req.body;
+    if (!productId || !quantity) {
       return res
         .status(400)
         .json({ message: "User ID, Product ID, and quantity are required" });
     }
 
-    const cartProduct = await addToCart(userId, productId, quantity);
+    const cartProduct = await addToCart(user.id, productId, quantity);
     res
       .status(201)
       .json({ message: "Product added to cart", data: cartProduct });
@@ -32,12 +36,12 @@ export const getCartHandler = async (
   res: Response
 ): Promise<any> => {
   try {
-    const { userId } = req.params;
-    if (!userId) {
+    const { id } = req.user;
+    if (!id) {
       return res.status(400).json({ message: "User ID is required" });
     }
 
-    const cart = await getCartByUserId(userId);
+    const cart = await getCartByUserId(id);
     if (!cart) {
       return res.status(404).json({ message: "Cart not found" });
     }
@@ -68,7 +72,11 @@ export const removeFromCartHandler = async (
       return res.status(400).json({ message: "Cart Product ID is required" });
     }
 
-    await removeFromCart(cartProductId);
+    const deletedCartProduct = await removeFromCart(cartProductId);
+    if (!deletedCartProduct) {
+      return res.status(404).json({ message: "Cart Product not found" });
+    }
+    
     res.status(200).json({ message: "Product removed from cart" });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
