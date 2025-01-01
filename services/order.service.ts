@@ -42,3 +42,14 @@ export const placeOrder = async (userId: string) => {
     console.error("Error placing order: ", error.message);
   }
 };
+
+export const getOrdersByUserId = async (userId: string) => {
+  try {
+    return await prisma.order.findMany({
+      where: { userId },
+      include: { orderProducts: true },
+    });
+  } catch (error: any) {
+    console.error("Error getting orders: ", error.message);
+  }
+};
