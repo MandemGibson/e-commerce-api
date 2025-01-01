@@ -88,3 +88,14 @@ export const cancelOrder = async (orderId: string, userId: string) => {
     console.error("Error cancelling order: ", error.message);
   }
 };
+
+//this is for admin only
+export const updateOrderStatus = async (orderId: string, status: string) => {
+  const validStatuses = ["PENDING", "DELIVERED", "CANCELLED"];
+  if (!validStatuses.includes(status)) console.error("Invalid status");
+
+  return await prisma.order.update({
+    where: { id: orderId },
+    data: { status },
+  });
+};
