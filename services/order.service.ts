@@ -65,3 +65,26 @@ export const getOrderById = async (orderId: string, userId: string) => {
     console.error("Error getting order: ", error.message);
   }
 };
+
+export const cancelOrder = async (orderId: string, userId: string) => {
+  try {
+    const order = await getOrderById(orderId, userId);
+
+    if (!order) throw new Error("Order not found");
+
+    if (order.status === "CANCELLED")
+      throw new Error("Order already cancelled");
+
+    if (order.status === "DELIVERED")
+      throw new Error("Order already delivered");
+
+    await prisma.order.update({
+      where: { id: orderId },
+      data: { status: "CANCELLED" },
+    });
+
+    return order;
+  } catch (error: any) {
+    console.error("Error cancelling order: ", error.message);
+  }
+};
