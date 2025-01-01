@@ -48,8 +48,20 @@ export const getOrdersByUserId = async (userId: string) => {
     return await prisma.order.findMany({
       where: { userId },
       include: { orderProducts: true },
+      orderBy: { createdAt: "desc" },
     });
   } catch (error: any) {
     console.error("Error getting orders: ", error.message);
+  }
+};
+
+export const getOrderById = async (orderId: string, userId: string) => {
+  try {
+    return await prisma.order.findUnique({
+      where: { id: orderId, userId },
+      include: { orderProducts: true },
+    });
+  } catch (error: any) {
+    console.error("Error getting order: ", error.message);
   }
 };
