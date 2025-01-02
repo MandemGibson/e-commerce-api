@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
 import {
-    cancelOrder,
+  cancelOrder,
   getOrderById,
   getOrdersByUserId,
   placeOrder,
+  updateOrderStatus,
 } from "../services/order.service";
 
 export const placeOrderHandler = async (req: Request, res: Response) => {
@@ -63,6 +64,25 @@ export const cancelOrderHandler = async (req: Request, res: Response) => {
     const order = await cancelOrder(orderId, user.id as string);
     if (!order)
       return res.status(400).json({ message: "Failed to cancel order" });
+
+    return res.status(200).json(order);
+  } catch (error: any) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const updateOrderStatusHandler = async (req: Request, res: Response) => {
+  try {
+    const { orderId } = req.params;
+    if (!orderId)
+      return res.status(400).json({ message: "Order ID is required" });
+
+    const { status } = req.body;
+    if (!status) return res.status(400).json({ message: "Status is required" });
+
+    const order = await updateOrderStatus(orderId, status);
+    if (!order)
+      return res.status(400).json({ message: "Failed to update order status" });
 
     return res.status(200).json(order);
   } catch (error: any) {
