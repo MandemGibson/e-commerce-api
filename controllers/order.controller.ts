@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import {
+    cancelOrder,
   getOrderById,
   getOrdersByUserId,
   placeOrder,
@@ -45,6 +46,25 @@ export const getOrderByIdHandler = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Order ID is required" });
 
     const order = await getOrderById(orderId, user.id as string);
+  } catch (error: any) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const cancelOrderHandler = async (req: Request, res: Response) => {
+  try {
+    const user = req.user;
+    if (!user) return res.status(401).json({ message: "Unauthorized" });
+
+    const { orderId } = req.params;
+    if (!orderId)
+      return res.status(400).json({ message: "Order ID is required" });
+
+    const order = await cancelOrder(orderId, user.id as string);
+    if (!order)
+      return res.status(400).json({ message: "Failed to cancel order" });
+
+    return res.status(200).json(order);
   } catch (error: any) {
     return res.status(500).json({ message: error.message });
   }

@@ -78,12 +78,10 @@ export const cancelOrder = async (orderId: string, userId: string) => {
     if (order.status === "DELIVERED")
       throw new Error("Order already delivered");
 
-    await prisma.order.update({
+    return await prisma.order.update({
       where: { id: orderId },
       data: { status: "CANCELLED" },
     });
-
-    return order;
   } catch (error: any) {
     console.error("Error cancelling order: ", error.message);
   }
