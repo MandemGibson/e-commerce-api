@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  getOrderByIdHandler,
   getOrdersByUserIdHandler,
   placeOrderHandler,
 } from "../controllers/order.controller";
@@ -9,3 +10,4 @@ export const orderRouter = Router();
 
 orderRouter.post("/place", requireUser, placeOrderHandler);
 orderRouter.get("/", requireUser, getOrdersByUserIdHandler);
+orderRouter.get("/:orderId", requireUser, getOrderByIdHandler);
