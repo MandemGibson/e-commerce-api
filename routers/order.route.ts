@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+    cancelOrderHandler,
   getOrderByIdHandler,
   getOrdersByUserIdHandler,
   placeOrderHandler,
@@ -11,3 +12,4 @@ export const orderRouter = Router();
 orderRouter.post("/place", requireUser, placeOrderHandler);
 orderRouter.get("/", requireUser, getOrdersByUserIdHandler);
 orderRouter.get("/:orderId", requireUser, getOrderByIdHandler);
+orderRouter.patch("/:orderId/cancel", requireUser, cancelOrderHandler);
