@@ -7,7 +7,10 @@ import {
   updateOrderStatus,
 } from "../services/order.service";
 
-export const placeOrderHandler = async (req: Request, res: Response) => {
+export const placeOrderHandler = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
   try {
     const user = req.user;
     if (!user) return res.status(401).json({ message: "Unauthorized" });
@@ -22,7 +25,10 @@ export const placeOrderHandler = async (req: Request, res: Response) => {
   }
 };
 
-export const getOrdersByUserIdHandler = async (req: Request, res: Response) => {
+export const getOrdersByUserIdHandler = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
   try {
     const user = req.user;
     if (!user) return res.status(401).json({ message: "Unauthorized" });
@@ -37,7 +43,10 @@ export const getOrdersByUserIdHandler = async (req: Request, res: Response) => {
   }
 };
 
-export const getOrderByIdHandler = async (req: Request, res: Response) => {
+export const getOrderByIdHandler = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
   try {
     const user = req.user;
     if (!user) return res.status(401).json({ message: "Unauthorized" });
@@ -52,7 +61,10 @@ export const getOrderByIdHandler = async (req: Request, res: Response) => {
   }
 };
 
-export const cancelOrderHandler = async (req: Request, res: Response) => {
+export const cancelOrderHandler = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
   try {
     const user = req.user;
     if (!user) return res.status(401).json({ message: "Unauthorized" });
@@ -71,7 +83,10 @@ export const cancelOrderHandler = async (req: Request, res: Response) => {
   }
 };
 
-export const updateOrderStatusHandler = async (req: Request, res: Response) => {
+export const updateOrderStatusHandler = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
   try {
     const { orderId } = req.params;
     if (!orderId)
