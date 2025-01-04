@@ -25,7 +25,8 @@
     "express": "^4.21.2",
     "express-rate-limit": "^7.4.1",
     "ioredis": "^5.4.1",
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
@@ -33,6 +34,7 @@
     "@types/express": "^5.0.0",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/morgan": "^1.9.9",
+    "@types/multer": "^1.4.12",
     "@types/node": "^22.10.2",
     "morgan": "^1.10.0",
     "nodemon": "^3.1.9",
