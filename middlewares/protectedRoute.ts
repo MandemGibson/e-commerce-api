@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { verifyToken } from "../utils/token";
 import { JwtPayload } from "jsonwebtoken";
-import { getAllUsers, getUserById } from "../services/user.service";
-import { getAdmin } from "../services/admin.service";
+import { getUserById } from "../services/user.service";
+import { getAdminById } from "../services/admin.service";
 import { Admin, User } from "../entity";
 
 declare global {
@@ -12,7 +12,6 @@ declare global {
     }
   }
 }
-
 
 export const requireUser = async (
   req: Request,
@@ -29,12 +28,12 @@ export const requireUser = async (
     const decoded = (await verifyToken(token)) as JwtPayload;
     if (!decoded) return res.status(401).json({ message: "Invalid token" });
 
-    // const users = await getAllUsers();
-    // const admin = await getAdmin("")
-
-    const user = await getUserById(decoded.userId);
-    if (!user)
+    const user =
+      (await getUserById(decoded.userId)) ||
+      (await getAdminById(decoded.userId));
+    if (!user) {
       return res.status(401).json({ message: "Unauthorized - No user found" });
+    }
 
     req.user = user;
 

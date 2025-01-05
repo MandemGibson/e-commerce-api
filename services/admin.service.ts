@@ -18,6 +18,14 @@ export const getAdmin = async (email: string) => {
   }
 };
 
+export const getAdminById = async (id: string) => {
+  try {
+    return prisma.admin.findUnique({ where: { id } });
+  } catch (error: any) {
+    console.error("Error getting admin: ", error.message);
+  }
+};
+
 export const createAdmin = async () => {
   try {
     const existingAdmin = await getAdmin(process.env.ADMIN_EMAIL as string);

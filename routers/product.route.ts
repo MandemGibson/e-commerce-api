@@ -8,12 +8,13 @@ import {
 } from "../controllers/product.controller";
 import { requireUser } from "../middlewares/protectedRoute";
 import { isAdmin } from "../middlewares/role";
+import { upload } from "../utils/multer";
 export const productRouter = Router();
 
 productRouter
   .route("/")
   .get(getAllProductsHandler)
-  .post(requireUser, isAdmin, addProductHandler);
+  .post(requireUser, isAdmin, upload.single("imageUrl"), addProductHandler);
 productRouter
   .route("/:productId")
   .get(getProductByIdHandler)

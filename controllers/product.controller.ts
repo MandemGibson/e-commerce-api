@@ -8,20 +8,33 @@ import {
   updateProduct,
 } from "../services/product.service";
 import { Product } from "../entity";
+import { imageUpload } from "../services/imageUpload.service";
 
 export const addProductHandler = async (
   req: Request,
   res: Response
 ): Promise<any> => {
   try {
-    const payload: Product = req.body;
+    if (!req.file) {
+      return res.status(400).json({ message: "Please upload an image" });
+    }
+
+    const imageUrl = await imageUpload(req.file.path); // Upload image to Cloudinary
+    if (!imageUrl) {
+      return res.status(400).json({ message: "Failed to upload image" });
+    }
+
+    const payload: Product = {
+      ...req.body,
+      imageUrl, // Dynamically set the Cloudinary URL
+    };
+
     const {
       productName,
       price,
       brand,
       quantity,
       description,
-      imageUrl,
       condition,
       categoryId,
     } = payload;
@@ -32,18 +45,18 @@ export const addProductHandler = async (
       !brand ||
       !quantity ||
       !description ||
-      !imageUrl ||
       !condition 
     ) {
       return res.status(400).json({ message: "Please fill in all fields" });
     }
 
-    if (!categoryId)
+    if(!categoryId)
       return res.status(400).json({ message: "Please select a category" });
 
     const newProduct = await addProduct(payload);
-    if (!newProduct)
+    if (!newProduct) {
       return res.status(400).json({ message: "Failed to add product" });
+    }
 
     res
       .status(201)
@@ -52,6 +65,7 @@ export const addProductHandler = async (
     res.status(500).json({ message: error.message });
   }
 };
+
 
 export const getAllProductsHandler = async (
   req: Request,
