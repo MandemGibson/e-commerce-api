@@ -14,7 +14,7 @@ export const productRouter = Router();
 productRouter
   .route("/")
   .get(getAllProductsHandler)
-  .post(requireUser, isAdmin, upload.single("imageUrl"), addProductHandler);
+  .post(requireUser, isAdmin, upload.single("image"), addProductHandler);
 productRouter
   .route("/:productId")
   .get(getProductByIdHandler)
