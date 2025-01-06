@@ -19,14 +19,14 @@ export const addProductHandler = async (
       return res.status(400).json({ message: "Please upload an image" });
     }
 
-    const imageUrl = await imageUpload(req.file.path); // Upload image to Cloudinary
+    const imageUrl = await imageUpload(req.file.path); 
     if (!imageUrl) {
       return res.status(400).json({ message: "Failed to upload image" });
     }
 
     const payload: Product = {
       ...req.body,
-      imageUrl, // Dynamically set the Cloudinary URL
+      imageUrl,
     };
 
     const {
